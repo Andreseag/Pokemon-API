@@ -16,12 +16,23 @@ const fetchPokemon = async () =>{
 
 const displayPokemon = (pokemon) =>{
   const pokemonsHTMLStrign = pokemon.map( pokeman => `
-    <li class="card">
+    <li class="card" onclick="selectPokemon(${pokeman.id})">
       <img class="card-image" src="${pokeman.image}" />
       <h2 class="card-title">${pokeman.id}. ${pokeman.name}</h2>
     </li>
   ` ).join('');
   pokedex.innerHTML = pokemonsHTMLStrign;
+}
+
+const selectPokemon = async (id) => {
+  const url = `https://pokeapi.co/api/v2/pokemon/${id}`;
+  const res = await fetch(url);
+  const pokeman = await res.json();
+  displayPopup(pokeman);
+}
+
+const displayPopup = async (pokeman) => {
+  console.log(pokeman);
 }
 
 fetchPokemon()
