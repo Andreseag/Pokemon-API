@@ -5,7 +5,6 @@ const fetchPokemon = async () =>{
   const url = `https://pokeapi.co/api/v2/pokemon/?limit=150`;
   const res = await fetch(url);
   const data = await res.json();
-  console.log(data.results);
   const pokemon = data.results.map((result, index) => ({
     ...result,
     id: index + 1,
@@ -31,8 +30,35 @@ const selectPokemon = async (id) => {
   displayPopup(pokeman);
 }
 
-const displayPopup = async (pokeman) => {
+const displayPopup = (pokeman) => {
+  const type = pokeman.types.map( type =>  type.type.name).join(', ');
+  const image = pokeman.sprites['front_default'];
   console.log(pokeman);
+  const htmlString = `
+      <div class="popup">
+        <button 
+          id="closeBtn"
+          onclick="closePopup()"
+        >
+          Close
+        </button>
+        <div class="card" onclick="selectPokemon(${pokeman.id})">
+          <img class="card-image" src="${image}" />
+          <h2 class="card-title">${pokeman.id}. ${pokeman.name}</h2>
+          <p>
+            <small>Heigth: </small>${pokeman.height} |
+            <small>Weigth: </small>${pokeman.weight} |
+            <small>Type: </small>${type} 
+          </p>
+        </div>
+      </div>
+  `;
+  pokedex.innerHTML = htmlString + pokedex.innerHTML;
 }
 
+const closePopup = () => {
+  const popup = document.querySelector('.popup');
+  popup.parentElement.removeChild(popup);
+
+}
 fetchPokemon()
