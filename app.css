@@ -17,6 +17,7 @@ body {
 
 .card:hover {
   animation: bounce 0.5s linear;
+  cursor: pointer;
 }
 
 @keyframes bounce {

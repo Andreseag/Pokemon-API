@@ -1,5 +1,5 @@
 const pokedex = document.getElementById("pokedex");
-
+const pokeCache = {};
 // https://pokeapi.co/api/v2/pokemon/
 const fetchPokemon = async () =>{
   const url = `https://pokeapi.co/api/v2/pokemon/?limit=150`;
@@ -24,10 +24,14 @@ const displayPokemon = (pokemon) =>{
 }
 
 const selectPokemon = async (id) => {
-  const url = `https://pokeapi.co/api/v2/pokemon/${id}`;
-  const res = await fetch(url);
-  const pokeman = await res.json();
-  displayPopup(pokeman);
+  if(!pokeCache[id]){
+    const url = `https://pokeapi.co/api/v2/pokemon/${id}`;
+    const res = await fetch(url);
+    const pokeman = await res.json();
+    pokeCache[id] = pokeman;
+    displayPopup(pokeman);
+  }
+  displayPopup(pokeCache[id]);
 }
 
 const displayPopup = (pokeman) => {
